@@ -3,11 +3,20 @@ package main
 import "fmt"
 
 type abstractDuck struct {
-	display           func()
+	display func()
+	/**
+	 * Declare two reference variables for the
+	 * behaviour interface types.
+	 * All duck subclasses inherit these
+	 */
 	flyingBehaviour   flyBehaviour
 	quackingBehaviour quackBehaviour
 }
 
+/**
+ * Delegate fly and quack behaviour to
+ * respective behaviour classes
+ */
 func (d *abstractDuck) performFly() {
 	d.flyingBehaviour.fly()
 }
@@ -20,6 +29,9 @@ func (d *abstractDuck) swim() {
 	fmt.Println("All ducks float, even decoys!")
 }
 
+/**
+ * Setting the behaviour dynamically
+ */
 func (d *abstractDuck) setFlyingBehaviour(fb flyBehaviour) {
 	d.flyingBehaviour = fb
 }
@@ -34,6 +46,7 @@ type mallardDuck struct {
 
 func newMallardDuck() *mallardDuck {
 	d := &abstractDuck{
+		// implementing the abstract method
 		display: func() {
 			fmt.Println("I’m a real Mallard duck")
 		},
@@ -50,6 +63,7 @@ type modelDuck struct {
 
 func newModelDuck() *modelDuck {
 	d := &abstractDuck{
+		// implementing the abstract method
 		display: func() {
 			fmt.Println("I’m a real Model duck")
 		},

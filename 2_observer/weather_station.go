@@ -15,7 +15,7 @@ func main() {
 	weatherData.setMeasurements(82, 70, 29.2)
 	weatherData.setMeasurements(77, 90, 29.2)
 
-	weatherData.deRegisterObserver(statisticsDisplay)
+	weatherData.deregisterObserver(statisticsDisplay)
 
 	weatherData.setMeasurements(84, 80, 32.6)
 
