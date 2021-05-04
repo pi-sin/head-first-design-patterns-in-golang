@@ -15,7 +15,7 @@ type subject interface {
 
 type weatherData struct {
 	/**
-	 * Implementation of set in golang
+	 * Implementation of set in Go
 	 * Instantiating in the constructor (newWeatherData)
 	 */
 	observers   map[observer]bool
