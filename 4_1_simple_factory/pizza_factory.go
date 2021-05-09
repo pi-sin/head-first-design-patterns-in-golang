@@ -23,7 +23,7 @@ type pizzaFactory interface {
 	createPizza(pizzaType string) (iPizza, error)
 }
 
-type nyPizzaFactory struct {}
+type nyPizzaFactory struct{}
 
 func (nypf *nyPizzaFactory) createPizza(pizzaType string) (iPizza, error) {
 	switch pizzaType {
