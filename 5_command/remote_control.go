@@ -65,7 +65,7 @@ func (r *remoteControl) String() string {
 
 		onClass := r.getClassName(r.onCommands[i])
 		offClass := r.getClassName(r.offCommands[i])
-		s += fmt.Sprintf("[slot %d] %s %s\n", i, onClass, offClass)
+		s += fmt.Sprintf("[slot %d] %s   %s\n", i, onClass, offClass)
 	}
 	s += fmt.Sprintf("-----------------------------\n")
 
