@@ -162,6 +162,10 @@ func newMacroCommand(c []iCommand) *macroCommand {
 	}
 }
 
+func (m *macroCommand) addCommand(c iCommand) {
+	m.commands = append(m.commands, c)
+}
+
 func (m *macroCommand) execute() {
 	for _, command := range m.commands {
 		command.execute()
