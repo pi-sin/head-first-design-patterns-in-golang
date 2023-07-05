@@ -1,50 +1,37 @@
 package main
 
-/**
- * For our case, we can use interface for beverage
- * instead of an abstract class.
- */
-type beverage interface {
-	description() string
-	cost() float32
+// Component
+type Beverage interface {
+	Cost() float64
+	GetDescription() string
 }
 
-type espresso struct{}
+// ConcreteComponent
+type Espresso struct{}
 
-func (e *espresso) description() string {
-	return "Espresso"
+func NewEspresso() Beverage {
+	return &Espresso{}
 }
 
-func (e *espresso) cost() float32 {
+func (e *Espresso) Cost() float64 {
 	return 1.99
 }
 
-type houseBlend struct{}
-
-func (hb *houseBlend) description() string {
-	return "House Blend Coffee"
+func (e *Espresso) GetDescription() string {
+	return "Espresso"
 }
 
-func (hb *houseBlend) cost() float32 {
-	return 0.89
+// ConcreteComponent: DarkRoast
+type DarkRoast struct{}
+
+func NewDarkRoast() Beverage {
+	return &DarkRoast{}
 }
 
-type darkRoast struct{}
-
-func (dr *darkRoast) description() string {
-	return "Dark Roast Coffee"
-}
-
-func (dr *darkRoast) cost() float32 {
+func (d *DarkRoast) Cost() float64 {
 	return 0.99
 }
 
-type decaf struct{}
-
-func (d *decaf) description() string {
-	return "Decaf"
-}
-
-func (d *decaf) cost() float32 {
-	return 1.05
+func (d *DarkRoast) GetDescription() string {
+	return "Dark Roast Coffee"
 }

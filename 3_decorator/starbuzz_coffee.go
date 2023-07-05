@@ -3,42 +3,20 @@ package main
 import "fmt"
 
 func main() {
-	/**
-	 * Order up an espresso, no condiments
-	 * and print its description and cost
-	 */
-	beverage := &espresso{}
+	// Order up an espresso, no condiments
+	beverage1 := &Espresso{}
+	fmt.Println("Order1:", beverage1.GetDescription())
+	fmt.Println("Cost:", beverage1.Cost())
 
-	fmt.Printf("%s $%.2f\n", beverage.description(), beverage.cost())
+	// Create a DarkRoast coffee with milk and mocha
+	beverage2 := NewMocha(NewMilk(&DarkRoast{}))
 
-	// Make a DarkRoast object.
-	darkRoast := &darkRoast{}
+	fmt.Println("Order2:", beverage2.GetDescription())
+	fmt.Println("Cost:", beverage2.Cost())
 
-	// Wrap it with a Mocha
-	singleMocha := &mocha{
-		beverage: darkRoast,
-	}
+	// Add a new decorator (Soy) at runtime
+	beverage2 = NewSoy(beverage2)
 
-	// Wrap it in a second Mocha
-	doubleMocha := &mocha{
-		beverage: singleMocha,
-	}
-
-	// Wrap it in a Whip.
-	doubleMochaWhip := &whip{
-		beverage: doubleMocha,
-	}
-
-	fmt.Printf("%s $%.2f\n", doubleMochaWhip.description(), doubleMochaWhip.cost())
-
-	// Finally give us a HouseBlend with Soy, Mocha, and Whip.
-	soyMochaWhipHouseBlend := &whip{
-		beverage: &mocha{
-			beverage: &soy{
-				beverage: &houseBlend{},
-			},
-		},
-	}
-
-	fmt.Printf("%s $%.2f\n", soyMochaWhipHouseBlend.description(), soyMochaWhipHouseBlend.cost())
+	fmt.Println("Updated Order2:", beverage2.GetDescription())
+	fmt.Println("Updated Cost:", beverage2.Cost())
 }
