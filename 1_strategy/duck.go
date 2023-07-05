@@ -1,75 +1,52 @@
 package main
 
-import "fmt"
-
-type abstractDuck struct {
-	display func()
-	/**
-	 * Declare two reference variables for the
-	 * behaviour interface types.
-	 * All duck subclasses inherit these
-	 */
-	flyingBehaviour   flyBehaviour
-	quackingBehaviour quackBehaviour
+// Declare two reference variables for the behaviour interface types.
+// All duck subclasses inherit these.
+type Duck struct {
+	flyBehaviour   FlyBehaviour
+	quackBehaviour QuackBehaviour
 }
 
-/**
- * Delegate fly and quack behaviour to
- * respective behaviour classes
- */
-func (d *abstractDuck) performFly() {
-	d.flyingBehaviour.fly()
+// Delegate fly and quack behaviour to respective behaviour classes
+func (d Duck) PerformFly() {
+	d.flyBehaviour.Fly()
 }
 
-func (d *abstractDuck) performQuack() {
-	d.quackingBehaviour.quack()
+func (d Duck) PerformQuack() {
+	d.quackBehaviour.Quack()
 }
 
-func (d *abstractDuck) swim() {
-	fmt.Println("All ducks float, even decoys!")
+// Setting/Changing the behaviour dynamically
+func (d *Duck) SetFlyBehaviour(fb FlyBehaviour) {
+	d.flyBehaviour = fb
 }
 
-/**
- * Setting the behaviour dynamically
- */
-func (d *abstractDuck) setFlyingBehaviour(fb flyBehaviour) {
-	d.flyingBehaviour = fb
+func (d *Duck) SetQuackBehaviour(qb QuackBehaviour) {
+	d.quackBehaviour = qb
 }
 
-func (d *abstractDuck) setQuackingBehaviour(qb quackBehaviour) {
-	d.quackingBehaviour = qb
+// MallardDuck struct
+type MallardDuck struct {
+	Duck
 }
 
-type mallardDuck struct {
-	*abstractDuck
+// MallardDuck constructor
+func NewMallardDuck() *MallardDuck {
+	mallard := &MallardDuck{}
+	mallard.flyBehaviour = FlyWithWings{}
+	mallard.quackBehaviour = Quack{}
+	return mallard
 }
 
-func newMallardDuck() *mallardDuck {
-	d := &abstractDuck{
-		// implementing the abstract method
-		display: func() {
-			fmt.Println("I’m a real Mallard duck")
-		},
-		flyingBehaviour:   &flyWithWings{},
-		quackingBehaviour: &quack{},
-	}
-
-	return &mallardDuck{d}
+// RubberDuck struct
+type RubberDuck struct {
+	Duck
 }
 
-type modelDuck struct {
-	*abstractDuck
-}
-
-func newModelDuck() *modelDuck {
-	d := &abstractDuck{
-		// implementing the abstract method
-		display: func() {
-			fmt.Println("I’m a real Model duck")
-		},
-		flyingBehaviour:   &flyNoWay{},
-		quackingBehaviour: &muteQuack{},
-	}
-
-	return &modelDuck{d}
+// RubberDuck constructor
+func NewRubberDuck() *RubberDuck {
+	rubber := &RubberDuck{}
+	rubber.flyBehaviour = FlyNoWay{}
+	rubber.quackBehaviour = Squeak{}
+	return rubber
 }

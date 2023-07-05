@@ -2,37 +2,23 @@ package main
 
 import "fmt"
 
-/**
- * Interface that all flying behaviour classes implement
- */
-type flyBehaviour interface {
-	fly()
+// FlyBehaviour interface that all flying behaviour classes implement
+type FlyBehaviour interface {
+	Fly()
 }
 
-/**
- * Flying behaviour implementation for ducks that fly
- */
-type flyWithWings struct{}
+// Flying behaviour implementation for ducks that fly
+type FlyWithWings struct{}
 
-func (fw *flyWithWings) fly() {
-	fmt.Println("I'm flying")
+// FlyWithWings method
+func (fww FlyWithWings) Fly() {
+	fmt.Println("I'm flying!")
 }
 
-/**
- * Flying behaviour implementation for ducks
- * that do not fly (like rubber and decoy ducks)
- */
-type flyNoWay struct{}
+// Flying behaviour implementation for ducks that do not fly
+type FlyNoWay struct{}
 
-func (fnw *flyNoWay) fly() {
-	fmt.Println("I can't fly")
-}
-
-/**
- * Rocket-powered flying behaviour
- */
-type flyRocketPowered struct{}
-
-func (frp *flyRocketPowered) fly() {
-	fmt.Println("I’m flying with a rocket!")
+// FlyNoWay method
+func (fnw FlyNoWay) Fly() {
+	fmt.Println("I can't fly!")
 }

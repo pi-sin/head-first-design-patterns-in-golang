@@ -2,24 +2,31 @@ package main
 
 import "fmt"
 
-type quackBehaviour interface {
-	quack()
+// QuackBehavior interface that all quacking behaviour classes implement
+type QuackBehaviour interface {
+	Quack()
 }
 
-type quack struct{}
+// QuackBehavior implementation for ducks that quack
+type Quack struct{}
 
-func (q *quack) quack() {
-	fmt.Println("Quack")
+// Quack method
+func (q Quack) Quack() {
+	fmt.Println("Quack!")
 }
 
-type muteQuack struct{}
+// QuackBehavior implementation for ducks that squeak
+type Squeak struct{}
 
-func (mq *muteQuack) quack() {
-	fmt.Println("Silence")
+// Squeak method
+func (s Squeak) Quack() {
+	fmt.Println("Squeak!")
 }
 
-type squeak struct{}
+// QuackBehavior implementation for ducks that don't quack
+type MuteQuack struct{}
 
-func (s *squeak) quack() {
-	fmt.Println("Squeak")
+// MuteQuack method
+func (mq MuteQuack) Quack() {
+	fmt.Println("Silence!")
 }
