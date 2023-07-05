@@ -22,3 +22,11 @@ type FlyNoWay struct{}
 func (fnw FlyNoWay) Fly() {
 	fmt.Println("I can't fly!")
 }
+
+// Rocket-powered flying behaviour
+type FlyRocketPowered struct{}
+
+// FlyRocketPowered method
+func (frp FlyRocketPowered) Fly() {
+	fmt.Println("I'm flying with a rocket!")
+}

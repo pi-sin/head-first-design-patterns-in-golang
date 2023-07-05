@@ -3,74 +3,68 @@ package main
 import "fmt"
 
 /**
- * Observer interface is implemented by all observers,
- * Here we're passing the measurements to the observers
- * from the Subject when a weather measurement changes
+* Observer interface is implemented by all observers,
+* Here we're passing the measurements to the observers
+* from the Subject when a weather measurement changes
  */
-type observer interface {
-	update(temp float32, humidity float32, pressure float32)
+type Observer interface {
+	Update(temp, humidity, pressure float64)
 }
 
-type currentConditionDisplay struct {
-	temperature float32
-	humidity    float32
-	pressure    float32
+// CurrentConditionsDisplay struct
+type CurrentConditionsDisplay struct {
+	temperature, humidity float64
 }
 
-func newCurrentConditionDisplay() *currentConditionDisplay {
-	return &currentConditionDisplay{}
+// NewCurrentConditionsDisplay creates a new CurrentConditionsDisplay instance
+func NewCurrentConditionsDisplay() *CurrentConditionsDisplay {
+	return &CurrentConditionsDisplay{}
 }
 
-/**
- * This implements Observer and DisplayElement interfaces to get changes from WeatherData
- * and show the information based on its functionality respectively
- */
-func (ccd *currentConditionDisplay) update(temp float32, humidity float32, pressure float32) {
+// Update save the measurements and displays the required information
+func (ccd *CurrentConditionsDisplay) Update(temp, humidity, pressure float64) {
 	ccd.temperature = temp
 	ccd.humidity = humidity
-	ccd.pressure = pressure
-	/**
-	 * When update() is called, we save the measurements
-	 * and call display() to show the required information
-	 */
-	ccd.display()
+	ccd.Display()
 }
 
-func (ccd *currentConditionDisplay) display() {
-	fmt.Printf("Current conditions: Temperature:%.2f, Humidity:%.2f and Pressure:%.2f\n", ccd.temperature, ccd.humidity, ccd.pressure)
+// Display displays the current conditions
+func (ccd *CurrentConditionsDisplay) Display() {
+	fmt.Printf("Current conditions: %.2f°F temperature and %.2f%% humidity\n", ccd.temperature, ccd.humidity)
 }
 
-type statisticsDisplay struct {
-	count   uint32
-	avgTemp float32
-	maxTemp float32
-	minTemp float32
+// StatisticsDisplay struct
+type StatisticsDisplay struct {
+	minTemp, maxTemp, avgTemp float64
+	temperatureCount          int
 }
 
-func newStatisticsDisplay() *statisticsDisplay {
-	return &statisticsDisplay{}
+// NewStatisticsDisplay creates a new StatisticsDisplay instance
+func NewStatisticsDisplay() *StatisticsDisplay {
+	return &StatisticsDisplay{}
 }
 
-/**
- * This implements the avg, max and min temperatures.
- * When update is called, it does the calculation and
- * call the display() method to show the required information
- */
-func (sd *statisticsDisplay) update(temp float32, humidity float32, pressure float32) {
-	sd.count++
-	sd.avgTemp -= (sd.avgTemp - temp) / float32(sd.count)
-
-	if sd.maxTemp < temp || sd.maxTemp == 0.0 {
-		sd.maxTemp = temp
-	}
-
-	if sd.minTemp > temp || sd.minTemp == 0.0 {
+// Update calculates avg, min and max temp and displays the information
+func (sd *StatisticsDisplay) Update(temp, humidity, pressure float64) {
+	if sd.temperatureCount == 0 {
 		sd.minTemp = temp
+		sd.maxTemp = temp
+		sd.avgTemp = temp
+	} else {
+		if temp < sd.minTemp {
+			sd.minTemp = temp
+		}
+		if temp > sd.maxTemp {
+			sd.maxTemp = temp
+		}
+		sd.avgTemp = (sd.avgTemp*float64(sd.temperatureCount) + temp) / float64(sd.temperatureCount+1)
 	}
 
-	sd.display()
+	sd.temperatureCount++
+	sd.Display()
 }
 
-func (sd *statisticsDisplay) display() {
-	fmt.Printf("Avg/Max/Min Temperature:%.2f, %.2f, %.2f\n", sd.avgTemp, sd.maxTemp, sd.minTemp)
+// Display displays the statistics
+func (sd *StatisticsDisplay) Display() {
+	fmt.Printf("Temperature statistics: Min %.2f°F, Max %.2f°F, Average %.2f°F\n", sd.minTemp, sd.maxTemp, sd.avgTemp)
 }

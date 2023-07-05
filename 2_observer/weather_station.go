@@ -1,39 +1,15 @@
 package main
 
 func main() {
-	/**
-	 * Creating the weather object
-	 */
-	weatherData := newWeatherData()
+	weatherData := NewWeatherData()
 
-	/**
-	 * Creating the displays and registering as
-	 * observer to the Subject
-	 */
-	currentConditionDisplay := newCurrentConditionDisplay()
-	weatherData.registerObserver(currentConditionDisplay)
+	currentConditionsDisplay := NewCurrentConditionsDisplay()
+	statisticsDisplay := NewStatisticsDisplay()
 
-	statisticsDisplay := newStatisticsDisplay()
-	weatherData.registerObserver(statisticsDisplay)
-	//forecastDisplay := newForecastDisplay()
-	//weatherData.registerObserver(forecastDisplay)
+	weatherData.RegisterObserver(currentConditionsDisplay)
+	weatherData.RegisterObserver(statisticsDisplay)
 
-	/**
-	 * Simulate new weather measurements
-	 */
-	weatherData.setMeasurements(80, 65, 30.4)
-	weatherData.setMeasurements(82, 70, 29.2)
-	weatherData.setMeasurements(77, 90, 29.2)
-
-	/**
-	 * Deregistering the statisticsDisplay
-	 * Change in measurements won't notify this observer
-	 */
-	weatherData.deregisterObserver(statisticsDisplay)
-
-	weatherData.setMeasurements(84, 80, 32.6)
-
-	weatherData.registerObserver(statisticsDisplay)
-
-	weatherData.setMeasurements(84, 80, 32.6)
+	weatherData.SetMeasurements(80, 65, 30.4)
+	weatherData.SetMeasurements(82, 70, 29.2)
+	weatherData.SetMeasurements(78, 90, 29.2)
 }

@@ -1,81 +1,66 @@
 package main
 
-type subject interface {
+// Subject interface
+type Subject interface {
 	/**
-	 * Both of these methods take an Observer as argument
+	* Both of these methods take an Observer as argument
+	* that is, the Observer to be registered or removed.
 	 */
-	registerObserver(observer)
-	deregisterObserver(observer)
+	RegisterObserver(observer Observer)
+	RemoveObserver(observer Observer)
 	/**
-	 * This method is called to notify all the observers
-	 * when the Subject's state has changed
+	* This method is called to notify all the observers
+	* when the Subject's state has changed
 	 */
-	notifyObservers()
+	NotifyObservers()
 }
 
-type weatherData struct {
-	/**
-	 * Implementation of set in Go
-	 * Instantiating in the constructor (newWeatherData)
-	 */
-	observers   map[observer]bool
-	temperature float32
-	humidity    float32
-	pressure    float32
+// WeatherData struct
+type WeatherData struct {
+	observers                       []Observer
+	temperature, humidity, pressure float64
 }
 
-func newWeatherData() *weatherData {
-	return &weatherData{
-		observers: make(map[observer]bool),
+// NewWeatherData creates a new WeatherData instance
+func NewWeatherData() *WeatherData {
+	return &WeatherData{}
+}
+
+// RegisterObserver registers an observer
+func (wd *WeatherData) RegisterObserver(observer Observer) {
+	wd.observers = append(wd.observers, observer)
+}
+
+// RemoveObserver removes an observer
+func (wd *WeatherData) RemoveObserver(observer Observer) {
+	index := -1
+	for i, obs := range wd.observers {
+		if obs == observer {
+			index = i
+			break
+		}
+	}
+	if index >= 0 {
+		wd.observers = append(wd.observers[:index], wd.observers[index+1:]...)
 	}
 }
 
-/**
- * WeatherData now implements the Subject interface
- */
-func (w *weatherData) registerObserver(o observer) {
-	/**
-	 * When an observer registers, we add it in
-	 * the map with value set as true
-	 */
-	w.observers[o] = true
-}
-
-func (w *weatherData) deregisterObserver(o observer) {
-	/**
-	 * When an observer deregisters, we remove it
-	 * from the map after checking if the value exists
-	 */
-	if _, ok := w.observers[o]; ok {
-		delete(w.observers, o)
+// NotifyObservers notifies all observers by calling their update() method
+func (wd *WeatherData) NotifyObservers() {
+	for _, observer := range wd.observers {
+		observer.Update(wd.temperature, wd.humidity, wd.pressure)
 	}
 }
 
-func (w *weatherData) notifyObservers() {
-	/**
-	 * This is where we tell all the observers about the state
-	 * by calling the common update method
-	 */
-	for observer := range w.observers {
-		observer.update(w.temperature, w.humidity, w.pressure)
-	}
+// We notify the Observers when measurements are updated
+func (wd *WeatherData) measurementsChanged() {
+	wd.NotifyObservers()
 }
 
-/**
- * We notify the Observers when we get updated
- * measurements from the Weather Station
- */
-func (w *weatherData) measurementsChanged() {
-	w.notifyObservers()
-}
-
-/**
- * Dummy method to test our display elements.
- * Setting the measurements not via a device.
- */
-func (w *weatherData) setMeasurements(temp float32, humidity float32, pressure float32) {
-	w.temperature = temp
-	w.humidity = humidity
-	w.pressure = pressure
-	w.measurementsChanged()
+// SetMeasurements sets the weather measurements and notifies observers
+func (wd *WeatherData) SetMeasurements(temperature, humidity, pressure float64) {
+	wd.temperature = temperature
+	wd.humidity = humidity
+	wd.pressure = pressure
+	wd.measurementsChanged()
 }
